@@ -1,0 +1,29 @@
+{
+  "name": "key-layers",
+  "version": "0.0.1",
+  "main": "dist/src/KeyLayers.js",
+  "types": "dist/src/KeyLayers.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test-coverage": "jest --coverage --collectCoverageFrom=src/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nc-kage/key-layers.git"
+  },
+  "author": "Pavlo Gusar",
+  "dependencies": {
+    "@types/lodash": "^4.14.123",
+    "guid-typescript": "^1.0.9",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.12",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.14.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.4.5"
+  }
+}
