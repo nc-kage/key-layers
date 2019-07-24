@@ -126,7 +126,7 @@ export class Emitter {
       | Array<{ name: string, id: number }>
       | Array<Array<string | number>>
       | { [key: string]: number },
-    secondParam: number | string,
+    secondParam?: number | string,
   ): number {
     if (typeof firstParam === 'string' && typeof secondParam === 'number') {
       return Number(Emitter.setLayerMap({ name: firstParam, id: secondParam }));

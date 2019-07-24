@@ -72,7 +72,7 @@ export declare class Emitter {
         id: number;
     }> | Array<Array<string | number>> | {
         [key: string]: number;
-    }, secondParam: number | string): number;
+    }, secondParam?: number | string): number;
     private static setLayerMap;
     private static setLayerMapFromObject;
     private static setLayerMapFromArray;
