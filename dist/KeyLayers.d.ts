@@ -1,4 +1,5 @@
 import { ListenerOptions } from './types';
+export { ListenerOptions } from './types';
 export declare const EMITTER_FORCE_LAYER_TYPE: string;
 export declare const EMITTER_TOP_LAYER_TYPE: string;
 export declare class Emitter {
