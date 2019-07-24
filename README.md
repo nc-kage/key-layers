@@ -1,10 +1,5 @@
 # key-layers
-Free and small library for comfortable handling key events. If web application contains the several abstract layers such as file browsing, image preview, video preview etc. If active layer needs to handle own events and lock event handlers of the other layers, KeyLayersJS can help to resolve this task.
-
-## Installation
-To install the stable version:
-
-`npm i key-layers --save`
+Free and small library for comfortable handling key events. If web application contains the several abstract layers such as file browsing, image preview, video preview etc. If active layer needs to handle own events and lock event handlers of the other layers, key-layers can help to resolve this task.
 
 # Getting Started
 To create a Emitter instance (key listeners instance) for the layer execute the **Emitter** constructor.
