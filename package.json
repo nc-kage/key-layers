@@ -1,8 +1,8 @@
 {
   "name": "key-layers",
   "version": "0.0.1",
-  "main": "dist/src/KeyLayers.js",
-  "types": "dist/src/KeyLayers.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest",
