@@ -2,8 +2,6 @@ import { Guid } from 'guid-typescript';
 import { isArray, isUndefined, get, noop, last } from 'lodash';
 import { ListenerOptions, ListenersTarget, ListenersTargetItem, ListenerType } from './types';
 
-export { ListenerOptions } from './types';
-
 const ID = Guid.create().toString();
 const RELEASE_DELAY = 150;
 
