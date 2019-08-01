@@ -197,10 +197,10 @@ export class Emitter {
 
   private static setGeneralListeners() {
     if (!isListenersSet) {
-      window.addEventListener('keypress', onPress);
-      window.addEventListener('keyup', onUp);
-      window.addEventListener('keydown', onDown);
-      window.addEventListener('blur', onWindowBlur);
+      window.addEventListener('keypress', onPress, true);
+      window.addEventListener('keyup', onUp, true);
+      window.addEventListener('keydown', onDown, true);
+      window.addEventListener('blur', onWindowBlur, true);
       isListenersSet = true;
     }
   }
