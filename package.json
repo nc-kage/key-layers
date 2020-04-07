@@ -1,11 +1,13 @@
 {
   "name": "key-layers-js",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "rollup -c",
     "test": "jest",
     "test-coverage": "jest --coverage --collectCoverageFrom=src/**/*.ts"
   },
@@ -15,16 +17,25 @@
   },
   "author": "Pavlo Gusar",
   "dependencies": {
-    "@types/lodash": "^4.14.123",
+    "@types/lodash-es": "^4.17.3",
     "guid-typescript": "^1.0.9",
-    "lodash": "^4.17.11"
+    "lodash-es": "^4.17.15"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.12",
-    "jest": "^24.8.0",
-    "ts-jest": "^24.0.2",
-    "tslint": "^5.14.0",
-    "tslint-config-airbnb": "^5.11.1",
-    "typescript": "^3.4.5"
+    "@svgr/rollup": "^5.3.1",
+    "@types/jest": "^25.2.1",
+    "jest": "^25.2.7",
+    "rollup": "^2.3.3",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.2",
+    "rollup-plugin-postcss": "^2.5.0",
+    "rollup-plugin-typescript2": "^0.27.0",
+    "rollup-plugin-url": "^3.0.1",
+    "ts-jest": "^25.3.1",
+    "tslint": "^6.1.1",
+    "tslint-config-airbnb": "^5.11.2",
+    "typescript": "^3.8.3"
   }
 }

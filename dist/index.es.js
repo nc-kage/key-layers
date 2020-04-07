@@ -1,7 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
 function unwrapExports (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
@@ -1693,7 +1689,5 @@ var Emitter = /** @class */ (function () {
     return Emitter;
 }());
 
-exports.EMITTER_FORCE_LAYER_TYPE = EMITTER_FORCE_LAYER_TYPE;
-exports.EMITTER_TOP_LAYER_TYPE = EMITTER_TOP_LAYER_TYPE;
-exports.Emitter = Emitter;
-//# sourceMappingURL=index.js.map
+export { EMITTER_FORCE_LAYER_TYPE, EMITTER_TOP_LAYER_TYPE, Emitter };
+//# sourceMappingURL=index.es.js.map

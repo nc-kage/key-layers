@@ -1,54 +1,54 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const guid_typescript_1 = require("guid-typescript");
-const lodash_1 = require("lodash");
-const ID = guid_typescript_1.Guid.create().toString();
-const RELEASE_DELAY = 150;
-exports.EMITTER_FORCE_LAYER_TYPE = `EMITTER_FORCE_LAYER_TYPE_${ID}`;
-exports.EMITTER_TOP_LAYER_TYPE = `EMITTER_TOP_LAYER_TYPE_${ID}`;
-let isListenersSet = false;
-const layersMap = [];
-const listenersLayers = [];
-const listenersPredefinedLayers = {};
-const forceListeners = [];
-const onEvent = (e, type) => {
-    forceListeners.forEach((listener) => {
-        lodash_1.get(listener, type, lodash_1.noop)(e);
+var guid_typescript_1 = require("guid-typescript");
+var lodash_es_1 = require("lodash-es");
+var ID = guid_typescript_1.Guid.create().toString();
+var RELEASE_DELAY = 150;
+exports.EMITTER_FORCE_LAYER_TYPE = "EMITTER_FORCE_LAYER_TYPE_" + ID;
+exports.EMITTER_TOP_LAYER_TYPE = "EMITTER_TOP_LAYER_TYPE_" + ID;
+var isListenersSet = false;
+var layersMap = [];
+var listenersLayers = [];
+var listenersPredefinedLayers = {};
+var forceListeners = [];
+var onEvent = function (e, type) {
+    forceListeners.forEach(function (listener) {
+        lodash_es_1.get(listener, type, lodash_es_1.noop)(e);
     });
     if (listenersLayers.length) {
-        lodash_1.get(lodash_1.last(listenersLayers), type, lodash_1.noop)(e);
+        lodash_es_1.get(lodash_es_1.last(listenersLayers), type, lodash_es_1.noop)(e);
     }
     else {
-        const layers = Object.keys(listenersPredefinedLayers)
-            .filter((key) => listenersPredefinedLayers[Number(key)].length > 0)
-            .sort((a, b) => Number(a) - Number(b));
-        (listenersPredefinedLayers[Number(lodash_1.last(layers))] || [])
-            .forEach((listener) => {
-            lodash_1.get(listener, type, lodash_1.noop)(e);
+        var layers = Object.keys(listenersPredefinedLayers)
+            .filter(function (key) { return listenersPredefinedLayers[Number(key)].length > 0; })
+            .sort(function (a, b) { return Number(a) - Number(b); });
+        (listenersPredefinedLayers[Number(lodash_es_1.last(layers))] || [])
+            .forEach(function (listener) {
+            lodash_es_1.get(listener, type, lodash_es_1.noop)(e);
         });
     }
 };
-const clearTargetDownLists = (target) => {
-    target.forEach((item) => {
+var clearTargetDownLists = function (target) {
+    target.forEach(function (item) {
         item.instance.clearDownList();
     });
 };
-const onPress = (e) => {
+var onPress = function (e) {
     onEvent(e, 'onPress');
 };
-const onDown = (e) => {
+var onDown = function (e) {
     onEvent(e, 'onDown');
 };
-const onUp = (e) => {
+var onUp = function (e) {
     onEvent(e, 'onUp');
 };
-const onWindowBlur = () => {
+var onWindowBlur = function () {
     clearTargetDownLists(listenersLayers);
     clearTargetDownLists(forceListeners);
     Object.keys(listenersPredefinedLayers)
-        .forEach((key) => clearTargetDownLists(listenersPredefinedLayers[Number(key)]));
+        .forEach(function (key) { return clearTargetDownLists(listenersPredefinedLayers[Number(key)]); });
 };
-class Emitter {
+var Emitter = /** @class */ (function () {
     /**
      * Constructor of the class.
      * @param {boolean|number|string} subscribeType - Layer type,
@@ -58,7 +58,9 @@ class Emitter {
      * @param {number} releaseDelay - Delay between keyDown and keyUp events for
      * fires keyRelease event.
      */
-    constructor(subscribeType, releaseDelay = RELEASE_DELAY) {
+    function Emitter(subscribeType, releaseDelay) {
+        var _this = this;
+        if (releaseDelay === void 0) { releaseDelay = RELEASE_DELAY; }
         this.id = guid_typescript_1.Guid.create().toString();
         this.downList = [];
         this.releaseDictionary = {};
@@ -68,43 +70,43 @@ class Emitter {
         this.keyUpListeners = [];
         this.keyReleaseListeners = [];
         this.pressReleaseListeners = [];
-        this.pressHandler = (e) => {
-            const { downList } = this;
-            const keyCode = Emitter.getEventKeyCode(e);
-            const timeStamp = e.timeStamp;
-            const downData = downList.find(item => item.timeStamp === timeStamp);
+        this.pressHandler = function (e) {
+            var downList = _this.downList;
+            var keyCode = Emitter.getEventKeyCode(e);
+            var timeStamp = e.timeStamp;
+            var downData = downList.find(function (item) { return item.timeStamp === timeStamp; });
             if (downData) {
                 downData.pressKeyCode = keyCode;
-                this.keyPressListeners.forEach(listener => this.executeCallback(e, listener, true));
+                _this.keyPressListeners.forEach(function (listener) { return _this.executeCallback(e, listener, true); });
             }
         };
-        this.downHandler = (e) => {
-            const { downList } = this;
-            const keyCode = Emitter.getEventKeyCode(e);
-            if (!downList.find(item => item.keyCode === keyCode)) {
-                downList.push({ keyCode, timeStamp: e.timeStamp });
+        this.downHandler = function (e) {
+            var downList = _this.downList;
+            var keyCode = Emitter.getEventKeyCode(e);
+            if (!downList.find(function (item) { return item.keyCode === keyCode; })) {
+                downList.push({ keyCode: keyCode, timeStamp: e.timeStamp });
             }
-            this.keyDownListeners.forEach(listener => this.executeCallback(e, listener));
+            _this.keyDownListeners.forEach(function (listener) { return _this.executeCallback(e, listener); });
         };
-        this.upHandler = (e) => {
-            const { downList, releaseDictionary, pressReleaseDictionary, releaseDelay } = this;
-            const keyCode = Emitter.getEventKeyCode(e);
-            let keyDownInfo = null;
-            for (let i = 0, ln = downList.length; i < ln; i += 1) {
+        this.upHandler = function (e) {
+            var _a = _this, downList = _a.downList, releaseDictionary = _a.releaseDictionary, pressReleaseDictionary = _a.pressReleaseDictionary, releaseDelay = _a.releaseDelay;
+            var keyCode = Emitter.getEventKeyCode(e);
+            var keyDownInfo = null;
+            for (var i = 0, ln = downList.length; i < ln; i += 1) {
                 if (downList[i].keyCode === keyCode) {
                     keyDownInfo = downList[i];
                     downList.splice(i, 1);
                     break;
                 }
             }
-            this.keyUpListeners.forEach(listener => this.executeCallback(e, listener));
+            _this.keyUpListeners.forEach(function (listener) { return _this.executeCallback(e, listener); });
             if (keyDownInfo && e.timeStamp - keyDownInfo.timeStamp <= releaseDelay) {
                 releaseDictionary[keyDownInfo.keyCode] = keyDownInfo.timeStamp;
-                this.keyReleaseListeners.forEach(listener => this.executeReleaseCallback(e, listener));
+                _this.keyReleaseListeners.forEach(function (listener) { return _this.executeReleaseCallback(e, listener); });
                 if (keyDownInfo.pressKeyCode) {
                     pressReleaseDictionary[keyDownInfo.keyCode] = keyDownInfo;
-                    this.pressReleaseListeners
-                        .forEach(listener => this.executeReleaseCallback(e, listener, true));
+                    _this.pressReleaseListeners
+                        .forEach(function (listener) { return _this.executeReleaseCallback(e, listener, true); });
                 }
             }
         };
@@ -175,69 +177,69 @@ class Emitter {
      *
      * @returns {number} Count of the set names;
      */
-    static setLayersMap(firstParam, secondParam) {
+    Emitter.setLayersMap = function (firstParam, secondParam) {
         if (typeof firstParam === 'string' && typeof secondParam === 'number') {
             return Number(Emitter.setLayerMap({ name: firstParam, id: secondParam }));
         }
         if (typeof firstParam === 'number' && typeof secondParam === 'string') {
             return Number(Emitter.setLayerMap({ name: secondParam, id: firstParam }));
         }
-        if (lodash_1.isArray(firstParam) && firstParam.length === 2
+        if (lodash_es_1.isArray(firstParam) && firstParam.length === 2
             && typeof firstParam[0] === 'string' && typeof firstParam[1] === 'number') {
             return Emitter.setLayersMap(firstParam[0], firstParam[1]);
         }
-        if (lodash_1.isArray(firstParam) && firstParam.length === 2
+        if (lodash_es_1.isArray(firstParam) && firstParam.length === 2
             && typeof firstParam[0] === 'number' && typeof firstParam[1] === 'string') {
             return Emitter.setLayersMap(firstParam[0], firstParam[1]);
         }
-        if (lodash_1.isArray(firstParam) && lodash_1.isUndefined(secondParam)) {
-            let setCount = 0;
-            firstParam.forEach((layerMap) => {
-                setCount += Number(Emitter.setLayerMap(layerMap));
+        if (lodash_es_1.isArray(firstParam) && lodash_es_1.isUndefined(secondParam)) {
+            var setCount_1 = 0;
+            firstParam.forEach(function (layerMap) {
+                setCount_1 += Number(Emitter.setLayerMap(layerMap));
             });
-            return setCount;
+            return setCount_1;
         }
-        if (!lodash_1.isArray(firstParam) && typeof firstParam === 'object'
-            && !lodash_1.isUndefined(firstParam.name) && !lodash_1.isUndefined(firstParam.id)) {
+        if (!lodash_es_1.isArray(firstParam) && typeof firstParam === 'object'
+            && !lodash_es_1.isUndefined(firstParam.name) && !lodash_es_1.isUndefined(firstParam.id)) {
             return Number(Emitter.setLayerMap(firstParam));
         }
-        if (!lodash_1.isArray(firstParam) && typeof firstParam === 'object') {
-            let setCount = 0;
-            Object.keys(firstParam).forEach((key) => {
-                const id = firstParam[key];
-                setCount += Number(Emitter.setLayerMap({ id, name: key }));
+        if (!lodash_es_1.isArray(firstParam) && typeof firstParam === 'object') {
+            var setCount_2 = 0;
+            Object.keys(firstParam).forEach(function (key) {
+                var id = firstParam[key];
+                setCount_2 += Number(Emitter.setLayerMap({ id: id, name: key }));
             });
-            return setCount;
+            return setCount_2;
         }
         return 0;
-    }
-    static setLayerMap(data) {
-        if (typeof data === 'object' && !lodash_1.isArray(data)) {
+    };
+    Emitter.setLayerMap = function (data) {
+        if (typeof data === 'object' && !lodash_es_1.isArray(data)) {
             return Emitter.setLayerMapFromObject(data);
         }
-        if (lodash_1.isArray(data)) {
+        if (lodash_es_1.isArray(data)) {
             return Emitter.setLayerMapFromArray(data);
         }
         return false;
-    }
-    static setLayerMapFromObject(data) {
-        const { name, id } = data || { name: '', id: 0 };
+    };
+    Emitter.setLayerMapFromObject = function (data) {
+        var _a = data || { name: '', id: 0 }, name = _a.name, id = _a.id;
         if (name) {
-            layersMap.push({ name, id });
+            layersMap.push({ name: name, id: id });
             return true;
         }
         return false;
-    }
-    static setLayerMapFromArray(data) {
-        let name = data[0];
-        let id = data[1];
+    };
+    Emitter.setLayerMapFromArray = function (data) {
+        var name = data[0];
+        var id = data[1];
         if (typeof name === 'number' && typeof id === 'string') {
             name = data[1];
             id = data[0];
         }
         return Emitter.setLayerMapFromObject({ name: name, id: id });
-    }
-    static setGeneralListeners() {
+    };
+    Emitter.setGeneralListeners = function () {
         if (!isListenersSet) {
             window.addEventListener('keypress', onPress, true);
             window.addEventListener('keyup', onUp, true);
@@ -245,23 +247,23 @@ class Emitter {
             window.addEventListener('blur', onWindowBlur, true);
             isListenersSet = true;
         }
-    }
-    static getEventKeyCode(e) {
+    };
+    Emitter.getEventKeyCode = function (e) {
         return e.which || e.keyCode;
-    }
-    static checkInputTarget(e) {
-        return ['INPUT', 'TEXTAREA'].includes(lodash_1.get(e, 'target.tagName'));
-    }
-    static checkMainOptions(e, options) {
-        const { altKey, ctrlKey, shiftKey, metaKey, skipInput } = options;
-        const isInputTarget = Emitter.checkInputTarget(e);
+    };
+    Emitter.checkInputTarget = function (e) {
+        return ['INPUT', 'TEXTAREA'].includes(lodash_es_1.get(e, 'target.tagName'));
+    };
+    Emitter.checkMainOptions = function (e, options) {
+        var altKey = options.altKey, ctrlKey = options.ctrlKey, shiftKey = options.shiftKey, metaKey = options.metaKey, skipInput = options.skipInput;
+        var isInputTarget = Emitter.checkInputTarget(e);
         return (altKey ? e.altKey : true)
             && (ctrlKey ? e.ctrlKey : true)
             && (shiftKey ? e.shiftKey : true)
             && (metaKey ? e.metaKey : true)
             && !(isInputTarget && skipInput);
-    }
-    static getListenersTarget(subscribeType) {
+    };
+    Emitter.getListenersTarget = function (subscribeType) {
         if (typeof subscribeType === 'number') {
             if (!listenersPredefinedLayers[subscribeType]) {
                 listenersPredefinedLayers[subscribeType] = [];
@@ -275,68 +277,71 @@ class Emitter {
             return listenersLayers;
         }
         if (typeof subscribeType === 'string') {
-            const layerId = lodash_1.get(layersMap.find(item => item.name === subscribeType), 'id');
+            var layerId = lodash_es_1.get(layersMap.find(function (item) { return item.name === subscribeType; }), 'id');
             if (typeof layerId === 'number' && layerId >= 0) {
                 return Emitter.getListenersTarget(layerId);
             }
         }
         return null;
-    }
-    static clearDownLists(subscribeType) {
+    };
+    Emitter.clearDownLists = function (subscribeType) {
         if (subscribeType === exports.EMITTER_TOP_LAYER_TYPE) {
             Emitter.clearLayerDownLists();
             Emitter.clearPredefinedLayersDownLists();
         }
         else if ((subscribeType === 'string' && subscribeType !== exports.EMITTER_FORCE_LAYER_TYPE)
             || typeof subscribeType === 'number') {
-            const layerId = typeof subscribeType === 'string'
-                ? lodash_1.get(layersMap.find(item => item.name === subscribeType), 'id')
+            var layerId = typeof subscribeType === 'string'
+                ? lodash_es_1.get(layersMap.find(function (item) { return item.name === subscribeType; }), 'id')
                 : subscribeType;
-            const biggestLayerId = Math.max.apply(null, Object.keys(listenersPredefinedLayers)
-                .map((key) => Number(key)));
+            var biggestLayerId = Math.max.apply(null, Object.keys(listenersPredefinedLayers)
+                .map(function (key) { return Number(key); }));
             if (layerId && layerId >= biggestLayerId) {
                 Emitter.clearPredefinedLayersDownLists([layerId]);
             }
         }
-    }
-    static clearLayerDownLists() {
+    };
+    Emitter.clearLayerDownLists = function () {
         clearTargetDownLists(listenersLayers);
-    }
-    static clearPredefinedLayersDownLists(skip = []) {
-        Object.keys(listenersPredefinedLayers).forEach((key) => {
-            const normalizedKey = Number(key);
+    };
+    Emitter.clearPredefinedLayersDownLists = function (skip) {
+        if (skip === void 0) { skip = []; }
+        Object.keys(listenersPredefinedLayers).forEach(function (key) {
+            var normalizedKey = Number(key);
             if (!skip.includes(normalizedKey)) {
                 clearTargetDownLists(listenersPredefinedLayers[normalizedKey]);
             }
         });
-    }
-    clearDownList() {
+    };
+    Emitter.prototype.clearDownList = function () {
         this.downList = [];
         this.releaseDictionary = {};
         this.pressReleaseDictionary = {};
-    }
-    addListener(type, callback, options = {}) {
+    };
+    Emitter.prototype.addListener = function (type, callback, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
         switch (type) {
             case 'keyDown':
-                this.keyDownListeners.push({ callback, options });
+                this.keyDownListeners.push({ callback: callback, options: options });
                 break;
             case 'keyPress':
-                this.keyPressListeners.push({ callback, options });
+                this.keyPressListeners.push({ callback: callback, options: options });
                 break;
             case 'keyUp':
-                this.keyUpListeners.push({ callback, options });
+                this.keyUpListeners.push({ callback: callback, options: options });
                 break;
             case 'keyRelease':
-                this.keyReleaseListeners.push({ callback, options });
+                this.keyReleaseListeners.push({ callback: callback, options: options });
                 break;
             case 'pressRelease':
-                this.pressReleaseListeners.push({ callback, options });
+                this.pressReleaseListeners.push({ callback: callback, options: options });
                 break;
         }
-        return () => this.removeListener(type, callback);
-    }
-    removeListener(type, callback) {
-        let collection = [];
+        return function () { return _this.removeListener(type, callback); };
+    };
+    Emitter.prototype.removeListener = function (type, callback) {
+        var collection = [];
         switch (type) {
             case 'keyDown':
                 collection = this.keyDownListeners;
@@ -354,19 +359,19 @@ class Emitter {
                 collection = this.pressReleaseListeners;
                 break;
         }
-        for (let i = 0, ln = collection.length; i < ln; i += 1) {
+        for (var i = 0, ln = collection.length; i < ln; i += 1) {
             if (collection[i].callback === callback) {
                 collection.splice(i, 1);
                 break;
             }
         }
-    }
-    destroy() {
+    };
+    Emitter.prototype.destroy = function () {
         this.removeListeners();
-    }
-    addListeners() {
-        const { subscribeType } = this;
-        const listenersTarget = Emitter.getListenersTarget(subscribeType);
+    };
+    Emitter.prototype.addListeners = function () {
+        var subscribeType = this.subscribeType;
+        var listenersTarget = Emitter.getListenersTarget(subscribeType);
         Emitter.clearDownLists(subscribeType);
         if (listenersTarget) {
             listenersTarget.push({
@@ -380,73 +385,82 @@ class Emitter {
         else {
             console.warn('KeyLayersJS', 'Unknown subscribe type!');
         }
-    }
-    removeListeners() {
-        const listenersTarget = Emitter.getListenersTarget(this.subscribeType);
+    };
+    Emitter.prototype.removeListeners = function () {
+        var listenersTarget = Emitter.getListenersTarget(this.subscribeType);
         if (listenersTarget) {
-            for (let i = 0, ln = listenersTarget.length; i < ln; i += 1) {
+            for (var i = 0, ln = listenersTarget.length; i < ln; i += 1) {
                 if (listenersTarget[i].id === this.id) {
                     listenersTarget.splice(i, 1);
                     break;
                 }
             }
         }
-    }
-    executeCallback(e, listener, isPressCheck = false) {
-        const { callback, options } = listener;
+    };
+    Emitter.prototype.executeCallback = function (e, listener, isPressCheck) {
+        if (isPressCheck === void 0) { isPressCheck = false; }
+        var callback = listener.callback, options = listener.options;
         if (Emitter.checkMainOptions(e, options) && this.checkCodeOptions(e, options, isPressCheck)) {
             callback(e);
         }
-    }
-    executeReleaseCallback(e, listener, isPressCheck = false) {
-        const { callback, options } = listener;
+    };
+    Emitter.prototype.executeReleaseCallback = function (e, listener, isPressCheck) {
+        if (isPressCheck === void 0) { isPressCheck = false; }
+        var callback = listener.callback, options = listener.options;
         if (Emitter.checkMainOptions(e, options)
             && this.checkReleaseCodeOptions(e, options, isPressCheck)) {
             callback(e);
         }
-    }
-    checkCodeOptions(e, options, isPressCheck = false) {
-        const { code } = options;
-        let { codes = [] } = options;
-        const { downList } = this;
-        const keyCode = Emitter.getEventKeyCode(e);
+    };
+    Emitter.prototype.checkCodeOptions = function (e, options, isPressCheck) {
+        if (isPressCheck === void 0) { isPressCheck = false; }
+        var code = options.code;
+        var _a = options.codes, codes = _a === void 0 ? [] : _a;
+        var downList = this.downList;
+        var keyCode = Emitter.getEventKeyCode(e);
         codes = code && !codes.length ? [code] : codes;
         if (codes.length) {
             if (!codes.includes(keyCode)) {
                 return false;
             }
-            for (let i = 0, ln = codes.length; i < ln; i += 1) {
-                const checkCode = codes[i];
-                if (checkCode !== keyCode && !downList.find(item => isPressCheck
-                    ? item.pressKeyCode === checkCode : item.keyCode === checkCode)) {
-                    return false;
+            var _loop_1 = function (i, ln) {
+                var checkCode = codes[i];
+                if (checkCode !== keyCode && !downList.find(function (item) { return isPressCheck
+                    ? item.pressKeyCode === checkCode : item.keyCode === checkCode; })) {
+                    return { value: false };
                 }
+            };
+            for (var i = 0, ln = codes.length; i < ln; i += 1) {
+                var state_1 = _loop_1(i, ln);
+                if (typeof state_1 === "object")
+                    return state_1.value;
             }
         }
         return true;
-    }
-    checkReleaseCodeOptions(e, options, isPressCheck = false) {
-        const { code } = options;
-        let { codes = [] } = options;
-        const { releaseDictionary, pressReleaseDictionary, releaseDelay } = this;
-        let keyCode = Emitter.getEventKeyCode(e);
+    };
+    Emitter.prototype.checkReleaseCodeOptions = function (e, options, isPressCheck) {
+        if (isPressCheck === void 0) { isPressCheck = false; }
+        var code = options.code;
+        var _a = options.codes, codes = _a === void 0 ? [] : _a;
+        var _b = this, releaseDictionary = _b.releaseDictionary, pressReleaseDictionary = _b.pressReleaseDictionary, releaseDelay = _b.releaseDelay;
+        var keyCode = Emitter.getEventKeyCode(e);
         if (isPressCheck) {
-            const keyPressInfo = pressReleaseDictionary[keyCode];
+            var keyPressInfo = pressReleaseDictionary[keyCode];
             if (e.timeStamp - keyPressInfo.timeStamp <= releaseDelay) {
                 keyCode = keyPressInfo.pressKeyCode || 0;
             }
         }
-        const timeStamp = e.timeStamp;
+        var timeStamp = e.timeStamp;
         codes = code && !codes.length ? [code] : codes;
         if (codes.length) {
             if (!codes.includes(keyCode)) {
                 return false;
             }
-            for (let i = 0, ln = codes.length; i < ln; i += 1) {
-                const checkCode = codes[i];
-                let releaseCheckTimestamp = 0;
+            var _loop_2 = function (i, ln) {
+                var checkCode = codes[i];
+                var releaseCheckTimestamp = 0;
                 if (isPressCheck) {
-                    const pressKey = Object.keys(pressReleaseDictionary).find((key) => {
+                    var pressKey = Object.keys(pressReleaseDictionary).find(function (key) {
                         return pressReleaseDictionary[Number(key)].pressKeyCode === checkCode;
                     });
                     releaseCheckTimestamp = pressKey ? pressReleaseDictionary[Number(pressKey)].timeStamp : 0;
@@ -456,11 +470,18 @@ class Emitter {
                 }
                 if (checkCode !== keyCode && !(releaseCheckTimestamp
                     && timeStamp - releaseCheckTimestamp <= releaseDelay)) {
-                    return false;
+                    return { value: false };
                 }
+            };
+            for (var i = 0, ln = codes.length; i < ln; i += 1) {
+                var state_2 = _loop_2(i, ln);
+                if (typeof state_2 === "object")
+                    return state_2.value;
             }
         }
         return true;
-    }
-}
+    };
+    return Emitter;
+}());
 exports.Emitter = Emitter;
+//# sourceMappingURL=KeyLayers.js.map

@@ -5,7 +5,7 @@ Free and small library for comfortable handling key events. If web application c
 To create a Emitter instance (key listeners instance) for the layer execute the **Emitter** constructor.
 
 ```javascript
-import { Emitter } from 'key-layers';
+import { Emitter } from 'key-layers-js';
 
 const secondLayerEmitter = new Emitter(2);
 
@@ -56,7 +56,7 @@ Layers that are created by Emittor constructor without index. Constructor execut
 
 **Listening layer is a layer that was created latest.**
 ```javascript
-import { Emitter } from 'key-layers';
+import { Emitter } from 'key-layers-js';
 
 //Create new "High priority layer" and conntect this layer with new Emitter instance (hightPriorityFirst)
 const hightPriorityFirst = new Emitter();
@@ -81,7 +81,7 @@ Layers with index (z-index).
 
 **Listening layer is a layer with the biggest index.**
 ```javascript
-import { Emitter } from 'key-layers';
+import { Emitter } from 'key-layers-js';
 
 //Create new Emitter instance (listenersTwoIndex) with "2" layer index
 const listenersTwoIndex = new Emitter(2);
@@ -116,7 +116,7 @@ the existence of the "high priority layers" and "general priority layers".
 
 For creating key listener layer which connected with **Force executable layer** needs to execute Emitter constructor with layerIndex = EMITTER_FORCE_LAYER_TYPE.
 ```javascript
-import { Emitter, EMITTER_FORCE_LAYER_TYPE } from 'key-layers';
+import { Emitter, EMITTER_FORCE_LAYER_TYPE } from 'key-layers-js';
 
 //Create new Emitter instance (listenersTwoIndex) with "2" layer index
 const listenersTwoIndex = new Emitter(2);
@@ -138,7 +138,7 @@ In general there are two active layers
 * Force executable layer
 * One of the high priority or low priority layer.
 ```javascript
-import { Emitter, EMITTER_FORCE_LAYER_TYPE } from 'key-layers';
+import { Emitter, EMITTER_FORCE_LAYER_TYPE } from 'key-layers-js';
 
 //Create new "High priority layer" and conntect this layer with new Emitter instance (hightPriorityFirst)
 const hightPriorityFirst = new Emitter();
@@ -186,7 +186,7 @@ Key listener constructor which takes two parameters
 ***layerIndex*** - it's an index of the layer with which key listerners instance connect.
 ```javascript
 //Examples
-import { Emitter, EMITTER_FORCE_LAYER_TYPE } from 'key-layers';
+import { Emitter, EMITTER_FORCE_LAYER_TYPE } from 'key-layers-js';
 
 //Connect key listerners instance with the first layer.
 const listenersOne = new Emitter(1);
@@ -204,7 +204,7 @@ const someLayerListeners = new Emitter('some layer name');
 ***releaseDelay*** - it's a delay between down and up events for release synthetic event. By default, this value sets to 150 ms.
 ```javascript
 //Example
-import { Emitter } from 'key-layers';
+import { Emitter } from 'key-layers-js';
 
 //Connect key listerners instance with the first layer and change release delay to 250 ms.
 const listenersOne = new Emitter(1, 250);
@@ -213,7 +213,7 @@ const listenersOne = new Emitter(1, 250);
 Force executable layer index.
 ```javascript
 //Example
-import { Emitter, EMITTER_FORCE_LAYER_TYPE } from 'key-layers';
+import { Emitter, EMITTER_FORCE_LAYER_TYPE } from 'key-layers-js';
 
 //Connect key listerners instance with the force executable layer.
 const forceListeners = new Emitter(EMITTER_FORCE_LAYER_TYPE);
@@ -223,7 +223,7 @@ const forceListeners = new Emitter(EMITTER_FORCE_LAYER_TYPE);
 Sets names for the layer's index.
 ```javascript
 //Examples
-import { Emitter } from 'key-layers';
+import { Emitter } from 'key-layers-js';
 
 //Sets name for the first layer using two parameters
 Emitter.setLayersMap('someLayer', 1);

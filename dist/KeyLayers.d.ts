@@ -67,10 +67,10 @@ export declare class Emitter {
     static setLayersMap(firstParam: string | number | {
         name: string;
         id: number;
-    } | Array<string | number> | Array<{
+    } | (string | number)[] | {
         name: string;
         id: number;
-    }> | Array<Array<string | number>> | {
+    }[] | (string | number)[][] | {
         [key: string]: number;
     }, secondParam?: number | string): number;
     private static setLayerMap;

@@ -1,5 +1,5 @@
 import { Guid } from 'guid-typescript';
-import { isArray, isUndefined, get, noop, last } from 'lodash';
+import { isArray, isUndefined, get, noop, last } from 'lodash-es';
 import { ListenerOptions, ListenersTarget, ListenersTargetItem, ListenerType } from './types';
 
 const ID = Guid.create().toString();
@@ -9,7 +9,7 @@ export const EMITTER_FORCE_LAYER_TYPE = `EMITTER_FORCE_LAYER_TYPE_${ID}`;
 export const EMITTER_TOP_LAYER_TYPE = `EMITTER_TOP_LAYER_TYPE_${ID}`;
 
 let isListenersSet = false;
-const layersMap: Array<{ name: string; id: number }> = [];
+const layersMap: { name: string; id: number }[] = [];
 const listenersLayers: ListenersTarget = [];
 const listenersPredefinedLayers: {
   [key: number]: ListenersTarget;
@@ -122,9 +122,9 @@ export class Emitter {
     firstParam: string
       | number
       | { name: string, id: number }
-      | Array<string | number>
-      | Array<{ name: string, id: number }>
-      | Array<Array<string | number>>
+      | (string | number)[]
+      | { name: string, id: number }[]
+      | (string | number)[][]
       | { [key: string]: number },
     secondParam?: number | string,
   ): number {
@@ -144,8 +144,8 @@ export class Emitter {
     }
     if (isArray(firstParam) && isUndefined(secondParam)) {
       let setCount = 0;
-      (firstParam as Array<{ name: string, id: number } | Array<string | number>>).forEach((
-        layerMap: { name: string, id: number } | Array<string | number>,
+      (firstParam as ({ name: string, id: number } | (string | number)[])[]).forEach((
+        layerMap: { name: string, id: number } | (string | number)[],
       ) => {
         setCount += Number(Emitter.setLayerMap(layerMap));
       });
@@ -166,7 +166,7 @@ export class Emitter {
     return 0;
   }
 
-  private static setLayerMap(data: { name: string; id: number } | Array<string | number>): boolean {
+  private static setLayerMap(data: { name: string; id: number } | (string | number)[]): boolean {
     if (typeof data === 'object' && !isArray(data)) {
       return Emitter.setLayerMapFromObject(data);
     }
@@ -185,7 +185,7 @@ export class Emitter {
     return false;
   }
 
-  private static setLayerMapFromArray(data: Array<string | number>): boolean {
+  private static setLayerMapFromArray(data: (string | number)[]): boolean {
     let name = data[0];
     let id = data[1];
     if (typeof name === 'number' && typeof id === 'string') {
@@ -289,11 +289,11 @@ export class Emitter {
   private readonly subscribeType: boolean | number | string;
   private readonly releaseDelay: number;
   private readonly id: string = Guid.create().toString();
-  private downList: Array<{
+  private downList: {
     timeStamp: number;
     keyCode: number;
     pressKeyCode?: number;
-  }> = [];
+  }[] = [];
   private releaseDictionary: { [key: string]: number } = {};
   private pressReleaseDictionary: {
     [key: number]: {
