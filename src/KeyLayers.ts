@@ -1,6 +1,10 @@
 import { Guid } from 'guid-typescript';
 import { isArray, isUndefined, get, noop, last } from 'lodash-es';
-import { ListenerOptions, ListenersTarget, ListenersTargetItem, ListenerType } from './types';
+
+import {
+  ListenerOptions, ListenersTarget, ListenersTargetItem, ListenerType, EventType,
+} from './types';
+import IEmitter from './IEmitter';
 
 const ID = Guid.create().toString();
 const RELEASE_DELAY = 150;
@@ -55,7 +59,7 @@ const onWindowBlur = () => {
     .forEach((key: string) => clearTargetDownLists(listenersPredefinedLayers[Number(key)]));
 };
 
-export class Emitter {
+export class Emitter implements IEmitter {
   /**
    * @public
    *
@@ -286,7 +290,7 @@ export class Emitter {
     });
   }
 
-  private readonly subscribeType: boolean | number | string;
+  private subscribeType: boolean | number | string;
   private readonly releaseDelay: number;
   private readonly id: string = Guid.create().toString();
   private downList: {
@@ -331,7 +335,7 @@ export class Emitter {
   }
 
   public addListener(
-    type: string, callback: (e: KeyboardEvent) => void, options: ListenerOptions = {},
+    type: EventType, callback: (e: KeyboardEvent) => void, options: ListenerOptions = {},
   ) {
     switch (type) {
       case 'keyDown':
@@ -357,7 +361,7 @@ export class Emitter {
     return () => this.removeListener(type, callback);
   }
 
-  public removeListener(type: string, callback: (e: KeyboardEvent) => void) {
+  public removeListener(type: EventType, callback: (e: KeyboardEvent) => void) {
     let collection: ListenerType[] = [];
     switch (type) {
       case 'keyDown':
@@ -390,6 +394,12 @@ export class Emitter {
 
   public destroy() {
     this.removeListeners();
+  }
+
+  public updateLayerType(subscribeType: boolean | number | string) {
+    this.subscribeType = subscribeType;
+    this.removeListeners();
+    this.addListeners();
   }
 
   private addListeners() {

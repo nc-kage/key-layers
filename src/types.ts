@@ -24,3 +24,5 @@ export type ListenersTargetItem = {
   onDown: (e: KeyboardEvent) => void;
   onUp: (e: KeyboardEvent) => void;
 };
+
+export type EventType = 'keyDown' | 'keyPress' | 'keyUp' | 'keyRelease' | 'pressRelease';

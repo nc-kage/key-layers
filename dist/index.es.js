@@ -1574,6 +1574,11 @@ var Emitter = /** @class */ (function () {
     Emitter.prototype.destroy = function () {
         this.removeListeners();
     };
+    Emitter.prototype.updateLayerType = function (subscribeType) {
+        this.subscribeType = subscribeType;
+        this.removeListeners();
+        this.addListeners();
+    };
     Emitter.prototype.addListeners = function () {
         var subscribeType = this.subscribeType;
         var listenersTarget = Emitter.getListenersTarget(subscribeType);

@@ -1,7 +1,8 @@
-import { ListenerOptions } from './types';
+import { ListenerOptions, EventType } from './types';
+import IEmitter from './IEmitter';
 export declare const EMITTER_FORCE_LAYER_TYPE: string;
 export declare const EMITTER_TOP_LAYER_TYPE: string;
-export declare class Emitter {
+export declare class Emitter implements IEmitter {
     /**
      * @public
      *
@@ -84,7 +85,7 @@ export declare class Emitter {
     private static clearDownLists;
     private static clearLayerDownLists;
     private static clearPredefinedLayersDownLists;
-    private readonly subscribeType;
+    private subscribeType;
     private readonly releaseDelay;
     private readonly id;
     private downList;
@@ -106,9 +107,10 @@ export declare class Emitter {
      */
     constructor(subscribeType: boolean | number | string, releaseDelay?: number);
     clearDownList(): void;
-    addListener(type: string, callback: (e: KeyboardEvent) => void, options?: ListenerOptions): () => void;
-    removeListener(type: string, callback: (e: KeyboardEvent) => void): void;
+    addListener(type: EventType, callback: (e: KeyboardEvent) => void, options?: ListenerOptions): () => void;
+    removeListener(type: EventType, callback: (e: KeyboardEvent) => void): void;
     destroy(): void;
+    updateLayerType(subscribeType: boolean | number | string): void;
     private addListeners;
     private removeListeners;
     private pressHandler;
