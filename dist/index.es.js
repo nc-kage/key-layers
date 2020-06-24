@@ -1575,8 +1575,8 @@ var Emitter = /** @class */ (function () {
         this.removeListeners();
     };
     Emitter.prototype.updateLayerType = function (subscribeType) {
-        this.subscribeType = subscribeType;
         this.removeListeners();
+        this.subscribeType = subscribeType;
         this.addListeners();
     };
     Emitter.prototype.addListeners = function () {

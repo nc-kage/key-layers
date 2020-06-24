@@ -397,8 +397,8 @@ export class Emitter implements IEmitter {
   }
 
   public updateLayerType(subscribeType: boolean | number | string) {
-    this.subscribeType = subscribeType;
     this.removeListeners();
+    this.subscribeType = subscribeType;
     this.addListeners();
   }
 
