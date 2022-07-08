@@ -23,6 +23,7 @@ export default {
       sourcemap: true
     }
   ],
+  external: Object.keys(pkg.dependencies),
   plugins: [
     external(),
     url(),
