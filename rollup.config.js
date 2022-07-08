@@ -4,6 +4,7 @@ import external from 'rollup-plugin-peer-deps-external';
 import resolve from 'rollup-plugin-node-resolve';
 import url from 'rollup-plugin-url';
 import svgr from '@svgr/rollup';
+const { terser } = require('rollup-plugin-terser');
 
 import pkg from './package.json';
 
@@ -12,15 +13,9 @@ export default {
   output: [
     {
       file: pkg.main,
-      format: 'cjs',
-      exports: 'named',
-      sourcemap: true
-    },
-    {
-      file: pkg.module,
       format: 'es',
       exports: 'named',
-      sourcemap: true
+      sourcemap: false
     }
   ],
   external: Object.keys(pkg.dependencies),
@@ -33,6 +28,7 @@ export default {
       rollupCommonJSResolveHack: true,
       clean: true
     }),
-    commonjs()
+    commonjs(),
+    terser(),
   ]
 };

@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "sourceMap": true,
+    "target": "es6",
+    "sourceMap": false,
     "declaration": true,
+    "moduleResolution": "Node",
+    "module": "ES6",
     "outDir": "./dist"
   },
   "include": [
