@@ -1,9 +1,9 @@
 {
   "name": "key-layers-js",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
+  "module": "dist/index.js",
+  "jsnext:main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "scripts": {
